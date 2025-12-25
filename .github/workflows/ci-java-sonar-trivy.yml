@@ -37,4 +37,9 @@ jobs:
           context: .
           push: false
           tags: kammana/gha-java-app:${{ env.SHORT_SHA }}
- 
+      - name: Scan Docker Image with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: kammana/gha-java-app:${{ env.SHORT_SHA }}
+          severity: CRITICAL,HIGH
+          exit-code: 1
