@@ -57,7 +57,7 @@ jobs:
       - name: Install yq tool
         uses: mikefarah/yq@v4.44.3
       - name: Update k8s Deployment YAML with New Image
-        run: yq -i '.spec.template.spec.containers[0].image = "kammana/gha-pyapp:" + strenv(SHORT_SHA)' ./k8s/java-app-deployment.yml
+        run: yq -i '.spec.template.spec.containers[0].image = "kammana/gha-java-app:" + strenv(SHORT_SHA)' ./k8s/java-app-deployment.yml
       - name: Commit deployment file changes
         run: |
             git config user.name "github-actions[bot]"
