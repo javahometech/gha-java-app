@@ -54,3 +54,14 @@ jobs:
           context: .
           push: true
           tags: kammana/gha-java-app:${{ env.SHORT_SHA }}
+      - name: Install yq tool
+        uses: mikefarah/yq@v4.44.3
+      - name: Update k8s Deployment YAML with New Image
+        run: yq -i '.spec.template.spec.containers[0].image = "kammana/gha-pyapp:" + strenv(SHORT_SHA)' ./k8s/java-app-deployment.yml
+      - name: Commit deployment file changes
+        run: |
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions@noreply"
+            git add ./k8s/java-app-deployment.yml
+            git commit -m 'docker tag updated by GHA' || echo "Already commited changes"
+            git push origin main
